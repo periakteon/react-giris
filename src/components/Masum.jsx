@@ -1,8 +1,14 @@
 import "../App.css"
 
-const Masum = () => {
+const Masum = ({propsIcınBoyleYapiyoruz}) => {
+
+  console.log("ilk prop:", propsIcınBoyleYapiyoruz);
   return (
-    <div>"Masum.js" adında bir <code>component</code> oluşturdum ve bu componenti de App.js'te çağırdım. </div>
+    <div>
+      Masum componenti denemesi
+      <br />
+      Ayrıca gelen props'u şöyle kullanıyoruz: {propsIcınBoyleYapiyoruz}
+    </div>
   )
 }
 
