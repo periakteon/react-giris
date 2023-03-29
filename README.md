@@ -5,6 +5,6 @@ React giriş notları: https://www.youtube.com/watch?v=u2B75HWI2JI&amp;t=1432s
 
 # Önemli React Notları
 
-1) React, `component` mantığıyla çalışır. Yani, birden çok küçük parçaların birleştirilmesi esastır.
+1) React, `component` mantığıyla çalışır. Yani, birden çok küçük parçaların birleştirilmesi esastır. Mesela bir sitenin birden çok sayfa yapısı olabiliyor. Ürünü sepete ekleme, anasayfa, ürün detayı görüntüleme vb. Bunların hepsi esasen `component` mantığını ihtiva eder. Tüm kodları `App.js` içerisine yazmamak için kodları parçalara bölüyoruz.
 
 ***
