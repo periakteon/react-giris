@@ -484,3 +484,102 @@ Bu örneklerin incelenmesi veya kopyalanıp denenmes, `useState`in kullanımın�
 
 ## 6) `Hooks` kullanımları: `useEffect`
 
+`useEffect`'in syntax'ı şu şekildedir:
+
+```
+useEffect ( () => {
+
+}, [] );
+```
+
+Yani, `useEffect()` metodunun içerisine **callback function** olarak bir arrown function koyarız ve daha sonra da bir dizi `[]` ekleriz.
+
+Peki `useEffect` hook'u ne işe yarar? Sayfa yüklendiğinde çalışmasını istediğimiz fonksiyonları bunun içerisine yazarız. Arrayler, yani diziler `[]` de aslında bizim **render etme şeklimiz**dir. Meselâ arrown function'ın içerisine bir fonksiyon yazdığımızı düşünelim. Bu fonksiyon sayfa her render edildiğinde bir kere çalışır - eğer array'in içerisi boşsa. Biz bu fonksiyonun nasıl, kaç kere vb. çalışacağını array içerisinden belirtiriz.
+
+Meselâ elimizde aşağıdaki gibi bir kod olsun:
+
+```
+import { useEffect, useState } from 'react';
+
+function App() {
+
+  const [status, setStatus] = useState("başlangıç değeri");
+
+  useEffect(() => {
+    setStatus("yenilendikten sonra görünecek olan status yazısı")
+  }, []);
+
+  return (
+  
+    <div>
+      {status}
+    </div>
+  )
+}
+
+export default App;
+
+```
+
+Burada uygulamaya en nihayetinde bir div döndürüyoruz ve bu div, `status` değişkeni oluyor. `status` değişkenine baktığımızda da `useState` hook'unu kullandığını görüyoruz ve `status` değişkeninin `initial state`'i ise "başlangıç değeri" olarak belirlenmiş. Daha sonra ise `useEffect` hook'u kullanılıyor ve `status`un state'i `setStatus` ile değiştiriliyor. Bundan böyle sayfa yenilendiğinde `status`un değeri başka olacaktır.
+
+Başka bir örnek verelim:
+
+```
+import { useState, useEffect } from 'react';
+
+function App() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch('https://api.example.com/data');
+      const data = await response.json();
+      setData(data);
+    }
+    fetchData();
+  }, []);
+
+  if (!data) {
+    return <div>Loading...</div>;
+  }
+
+  return <div>{data}</div>;
+}
+
+
+export default App;
+
+```
+
+Daha basit bir örnek verelim:
+
+```
+import { useState, useEffect } from 'react';
+
+function App() {
+  const [count, setCount] = useState(0);
+
+  // This useEffect will run after every render
+  useEffect(() => {
+    console.log('Component has rendered');
+  });
+
+  // This useEffect will only run when `count` changes
+  useEffect(() => {
+    console.log(`Count has changed to ${count}`);
+  }, [count]);
+
+  return (
+    <div>
+      <p>You clicked the button {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  );
+}
+
+export default App;
+
+```
+
+Buradaki ilk `useEffect` hook'u sayfa her render edildiğinde çalışır. İkinci `useEffect` hook'u ise yalnızca `count`'ın state'i değiştiğinde çalışır.

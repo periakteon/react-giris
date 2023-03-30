@@ -1,26 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function App() {
+  const [count, setCount] = useState(0);
 
-  const [isOpen, setIsOpen] = useState(false);
+  // This useEffect will run after every render
+  useEffect(() => {
+    console.log('Component has rendered');
+  });
 
-  const openModal = () => {
-    setIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsOpen(false);
-  };
+  // This useEffect will only run when `count` changes
+  useEffect(() => {
+    console.log(`Count has changed to ${count}`);
+  }, [count]);
 
   return (
     <div>
-      <button onClick={openModal}>Open Modal</button>
-      {isOpen && (
-        <div>
-          <div>This is the content of the modal</div>
-          <button onClick={closeModal}>Close Modal</button>
-        </div>
-      )}
+      <p>You clicked the button {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
     </div>
   );
 }
