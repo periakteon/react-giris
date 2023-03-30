@@ -418,4 +418,38 @@ export default App;
 
 Bu da çok kullanışlı bir `boolean` örneğidir.
 
+**Modal pencere** örnekleri de `useState`in en çok kullanıldığı yerlerden birisidir:
+
+```
+import { useState } from 'react';
+
+function App() {
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+  return (
+    <div>
+      <button onClick={openModal}>Open Modal</button>
+      {isOpen && (
+        <div>
+          <div>This is the content of the modal</div>
+          <button onClick={closeModal}>Close Modal</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;
+
+```
+
 Bu örneklerin incelenmesi veya kopyalanıp denenmes, `useState`in kullanımını anlamaya yardımcı olacaktır.
