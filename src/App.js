@@ -1,20 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [status, setStatus] = useState("status'un ilk hâli");
+  const firstRef = useRef();
 
   useEffect(() => {
-    document.title = `Clicked ${count} times`;
-  }, [count]);
+    setStatus("status'un set edilmiş hâli")
+  }, [])
 
-  return (
-    <div>
-      <p>You clicked the button {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me
-      </button>
-    </div>
-  );
+  console.log('Ref örneğimiz: ', firstRef.current);
+  // Ref örneğimiz:  <input placeholder=​"useRef ile referans aldığımız element.. '.current' ile de ilk key'e ulaşıyoruz">​
+    return (
+      <>
+      <div>{status}</div>
+      <input ref={firstRef} placeholder="useRef ile referans aldığımız element.. '.current' ile de ilk key'e ulaşıyoruz"/>
+      </>
+    );
 }
 
 export default App;

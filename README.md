@@ -611,3 +611,21 @@ export default App;
 ```
 
 Yukarıdaki örnekte de sayfanın başlığını/title'ını `count` değişkeninin state'i olarak belirliyoruz.
+
+## 6) `Hooks` kullanımları: `useRef`
+
+`useRef`in kullanımı aslında bir HTML elementini JavaScript DOM'u üzerinden seçmeye benzer. Meselâ biz JavaScript kullanarak `input` id'sine sahip bir input alanını, meselâ bir textbox'ı seçmek istediğimizde aslında aşağıdaki gibi bir şey yapmamız gerekiyor:
+
+HTML kodu:
+
+```
+<input type="textbox" id="input" placeholder="search"> Ara... </input>
+```
+
+JavaScript kodu:
+
+```
+const input = document.getElementById("input")
+```
+
+İşte React'teki `useRef` hook'uyla DOM elemanları üzerinde işlem yapabiliyoruz.
