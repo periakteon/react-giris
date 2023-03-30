@@ -821,3 +821,11 @@ const memo = func(count);
 ```
 
 kodu bu şekilde yazmış olsaydık, `input`'a girilen her değerde `count` yeniden render edilecekti ve bu da en nihayetinde kasmayla/yavaşlamayla nihayetlenecekti. Ancak biz `useMemo` hook'unu kullanarak `count`'u bir kez render etmiş oluyoruz ve artık `count` ile ilgili bir işlem olmadığı sürece `count` yeniden render edilmeyecektir.
+
+Eğer biz kodu yukarıdaki gibi değil de aşağıdaki gibi yapsaydık:
+
+```
+const memo = useMemo( () => func(count), [text]);
+```
+
+Bu durumda `input`'a girilen her `text` değiştiğinde bu fonksiyon yeniden çalışırdı. Yani `array` içerisinde belirttiğimiz değer/eleman, `useMemo` hook'unun ne zaman devreye gireceğini belirtir.
