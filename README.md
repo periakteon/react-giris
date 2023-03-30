@@ -9,12 +9,38 @@ React giriş notları: https://www.youtube.com/watch?v=u2B75HWI2JI&amp;t=1432s
 
 Yani, birden çok küçük parçaların birleştirilmesi esastır. Mesela bir sitenin birden çok sayfa yapısı olabiliyor. Ürünü sepete ekleme, anasayfa, ürün detayı görüntüleme vb. Bunların hepsi esasen `component` mantığını ihtiva eder. Tüm kodları `App.js` içerisine yazmamak için kodları parçalara bölüyoruz.
 
+Özetle: React uygulamaları bileşenlerden oluşur. Bir bileşen, kendi mantığı ve görünümü olan bir UI (kullanıcı arayüzü) parçasıdır. Bir bileşen bir düğme kadar küçük veya tüm bir sayfa kadar büyük olabilir.
+
+React bileşenleri, markup döndüren JavaScript fonksiyonlarıdır:
+
+```
+function MyButton() {
+  return (
+    <button>I'm a button</button>
+  );
+}
+```
+
 ***
 
 
 ## 2) `Component` nasıl `import` edilir?
 
 Yazılan `component`leri de uygulama içerisinde <ComponentName/> şeklinde import edebiliyoruz. Tabii bunu yaparken ilgili `component`in içerisinde `export default ComponentName` yazılı olmalıdır.
+
+Elimizde `MyButton,jsx` dosyasında tanımladığımız bir fonksiyon olsun. Biz bunu başka bir `component`in içerisine geçirebiliriz (*nest*).
+
+```
+export default function MyApp() {
+  return (
+    <div>
+      <h1>Welcome to my app</h1>
+      <MyButton />
+    </div>
+  );
+}
+```
+**ÖNEMLİ**: `<MyButton />` öğesinin **büyük harfle** başladığına dikkat edin. Bunun bir React bileşeni olduğunu bu şekilde anlarsınız. React bileşen adları *her zaman* büyük harfle başlamalıdır, HTML etiketleri ise küçük harf olmalıdır.
 
 ***
 
@@ -453,3 +479,8 @@ export default App;
 ```
 
 Bu örneklerin incelenmesi veya kopyalanıp denenmes, `useState`in kullanımını anlamaya yardımcı olacaktır.
+
+***
+
+## 6) `Hooks` kullanımları: `useEffect`
+
