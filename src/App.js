@@ -2,22 +2,18 @@ import { useState } from 'react';
 
 function App() {
 
-  const [status, setStatus] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-  // eğer 'status' değeri TRUE ise
-  if (status) {
-    return (
-      <div> status durumu: true
-        <button onClick={ () => setStatus(!status) }> status'un tersini (yani, '!status'u) al </button>
-      </div>
-    )
-  } else {
-    return (
-      <div>status durumu: false
-        <button onClick={ () => setStatus(!status) }> status'un tersini (yani, '!status'u) al </button>
-      </div>
-    )
-  }
+  const toggleAccordion = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <div>
+      <button onClick={toggleAccordion}>Toggle Accordion</button>
+      {isOpen && <div>isOpen TRUE olduğunda bu gösterilir: This is the content of the accordion</div>}
+    </div>
+  );
 }
 
 export default App;
