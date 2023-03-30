@@ -2,22 +2,22 @@ import { useState } from 'react';
 
 function App() {
 
-  const [renk, setRenk] = useState('');
+  const [status, setStatus] = useState(false);
 
-  const handleInputChange = (event) => {
-    setRenk(event.target.value);
-  };
-  
-
-  return (
-    <div className='app'>
-      <input type="text" value={renk} onChange={handleInputChange} />
-      <div style={{color: renk}} >
-        asd
+  // eğer 'status' değeri TRUE ise
+  if (status) {
+    return (
+      <div> status durumu: true
+        <button onClick={ () => setStatus(!status) }> status'un tersini (yani, '!status'u) al </button>
       </div>
-      
-    </div>
-  );
+    )
+  } else {
+    return (
+      <div>status durumu: false
+        <button onClick={ () => setStatus(!status) }> status'un tersini (yani, '!status'u) al </button>
+      </div>
+    )
+  }
 }
 
 export default App;
