@@ -362,4 +362,33 @@ export default App;
 ```
 Meselâ yukarıdaki örnekte ilk olarak `renk` değişkeninin `initial state`'ini boş olarak ayarlıyoruz. Daha sonra bir event listener ekliyoruz ve input alanına girilen değeri `setRenk` fonksiyonuyla `renk` değişkenine yeniden atıyoruz. Böylece ekranda görünen yazının rengi, kullanıcının yazdığı renkte olacaktır.
 
+Ayrıca `boolean` değerler ile de benzer bir örneği yapabiliriz:
+
+```
+import { useState } from 'react';
+
+function App() {
+
+  const [status, setStatus] = useState(false);
+
+  // eğer 'status' değeri TRUE ise
+  if (status) {
+    return (
+      <div> status durumu: true
+        <button onClick={ () => setStatus(!status) }> status'un tersini (yani, '!status'u) al </button>
+      </div>
+    )
+  } else {
+    return (
+      <div>status durumu: false
+        <button onClick={ () => setStatus(!status) }> status'un tersini (yani, '!status'u) al </button>
+      </div>
+    )
+  }
+}
+
+export default App;
+
+```
+
 Bu örneklerin incelenmesi veya kopyalanıp denenmes, `useState`in kullanımını anlamaya yardımcı olacaktır.
