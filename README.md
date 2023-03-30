@@ -628,4 +628,196 @@ JavaScript kodu:
 const input = document.getElementById("input")
 ```
 
-İşte React'teki `useRef` hook'uyla DOM elemanları üzerinde işlem yapabiliyoruz.
+İşte React'teki `useRef` hook'uyla DOM elemanları üzerinde işlem yapabiliyoruz. Meselâ elimizde aşağıdaki gibi bir kod olsun:
+
+```
+import { useEffect, useRef, useState } from 'react';
+
+function App() {
+  const [status, setStatus] = useState("status'un ilk hâli");
+  const firstRef = useRef();
+
+  useEffect(() => {
+    setStatus("status'un set edilmiş hâli")
+  }, [])
+
+  console.log('Ref örneğimiz: ', firstRef.current);
+  // Ref örneğimiz:  <input placeholder=​"useRef ile referans aldığımız element.. '.current' ile de ilk key'e ulaşıyoruz">​
+    return (
+      <>
+      <div>{status}</div>
+      <input ref={firstRef} placeholder="useRef ile referans aldığımız element.. '.current' ile de ilk key'e ulaşıyoruz"/>
+      </>
+    );
+}
+
+export default App;
+
+```
+
+Burada `firstRef` değişkeni tanımlıyoruz ve buna `useRef` hook'unu atıyoruz. Daha sonra bu `firstRef` değişkenini `return` içerisindeki `input`a `ref` özelliği olarak veriyoruz. Bundan böyle `firstRef` ile `input` elementine ulaşabiliriz.
+
+Başka bir örnek:
+
+```
+import { useEffect, useRef, useState } from 'react';
+
+function App() {
+  const [count, setCount] = useState(0);
+  const countRef = useRef(0);
+
+  function handleClick() {
+    setCount(count + 1);
+    countRef.current = countRef.current + 1;
+  }
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <p>Count (ref): {countRef.current}</p>
+      <button onClick={handleClick}>Click me</button>
+    </div>
+  );
+}
+
+export default App;
+
+```
+
+Başka bir örnek daha:
+
+```
+import { useEffect, useRef, useState } from 'react';
+
+function App() {
+  const [count, setCount] = useState(0);
+  const prevCountRef = useRef();
+
+  useEffect(() => {
+    prevCountRef.current = count;
+    console.log( 'useEffect ile başladığında ilk prevCountRef değeri: ', prevCountRef);
+  }, [count]);
+
+  let message = '';
+  if (prevCountRef.current !== undefined) {
+    if (count > prevCountRef.current) {
+      message = 'Count increased';
+    } else {
+      message = 'Count decreased';
+    }
+  }
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <p>{message}</p>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+      <button onClick={() => setCount(count - 1)}>Decrement</button>
+    </div>
+  );
+}
+
+export default App;
+
+```
+
+Başka bir örnek daha:
+
+```
+import { useEffect, useRef, useState } from 'react';
+
+function App() {
+  const inputRef = useRef(null);
+
+  // buton'a tıklandığında referansa focus etsin
+  const handleClick = () => {
+    inputRef.current.focus();
+  };
+
+  return (
+    <div>
+      <input type="text" ref={inputRef} />
+      <button onClick={handleClick}>Focus Input</button>
+    </div>
+  );
+}
+
+export default App;
+
+```
+
+## 7) `Hooks` kullanımları: `useMemo`
+
+Yapı olarak `useEffect`'e benzer. Sayfaya çekilen veriyi **bir kere** çeker ve onu hafızada tutar. Sayfayı komple render etmiş olsak bile biz bu hook aracılığıyla o veriyi çekip istediğimiz zaman kullanabiliriz. Meselâ elimizde aşağıdaki gibi bir kod olsun:
+
+```
+import { useEffect, useRef, useState } from 'react';
+
+function App() {
+  const [count, setCount] = useState(0);
+
+  const func = (num) => {
+    console.log('hesaplanıyor.... : ');
+    for (let i = 0; i < 10000000000000; i++) {
+      console.log(i);
+      num++;
+    }
+    return num;
+  };
+
+  const memo = func(count);
+
+  return (
+  <>
+  {memo}
+  </>
+  )
+}
+
+export default App;
+
+```
+
+Bu kod aslında çok büyük bir sayıya kadar hep işlem yapıyor ve bu da uygulamanın donmasına, kasmasına sebep oluyor. İşte bu tür sorunlarla karşılaşmamak için `useMemo` hook'u kullanılmaktadır. Meselâ elimizde aşağıdaki gibi bir kod olsun:
+
+```
+import { useMemo, useState } from 'react';
+
+function App() {
+  const [count, setCount] = useState(0);
+  const [text, setText] = useState("");
+
+  const func = (num) => {
+    console.log('hesaplanıyor.... : ');
+    for (let i = 0; i < 10000; i++) {
+      console.log(i);
+      num++;
+    }
+    return num;
+  };
+
+  // useMemo syntax: useMemo(() => first, [second])
+  // burada aslında şunu demiş oluyoruz: sayfada hangi render işlemi yapılırsa yapılsın (bu örnekte setText değeri değiştikçe sayfa render oluyor) "count" değerinde bir değişiklik olmadığı sürece count'u render etme. Yani yukarıdaki for döngüsü her render işleminde çalışmış olmayacak - count ile ilgili render işlemleri hariç.
+  const memo = useMemo( () => func(count), [count]);
+
+  return (
+  <>
+  {memo}
+  <input value={text} onChange={e => setText(e.target.value)} placeholder='ara'/>
+  </>
+  )
+}
+
+export default App;
+
+```
+
+Bu örnekte aslında şunu yapmış oluyoruz: sayfada hangi render işlemi yapılırsa yapılsın (bu örnekte `setText` değeri değiştikçe sayfa render oluyor) `count` değerinde bir değişiklik olmadığı sürece `count`'u render etme. Yani yukarıdaki `for` döngüsü her render işleminde çalışmış olmayacak - `count` ile ilgili render işlemleri hariç.
+
+Eğer biz,
+
+```
+const memo = func(count);
+```
+
+kodu bu şekilde yazmış olsaydık, `input`'a girilen her değerde `count` yeniden render edilecekti ve bu da en nihayetinde kasmayla/yavaşlamayla nihayetlenecekti. Ancak biz `useMemo` hook'unu kullanarak `count`'u bir kez render etmiş oluyoruz ve artık `count` ile ilgili bir işlem olmadığı sürece `count` yeniden render edilmeyecektir.

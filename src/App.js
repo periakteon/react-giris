@@ -1,21 +1,28 @@
-import { useEffect, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 function App() {
-  const [status, setStatus] = useState("status'un ilk hâli");
-  const firstRef = useRef();
+  const [count, setCount] = useState(0);
+  const [text, setText] = useState("");
 
-  useEffect(() => {
-    setStatus("status'un set edilmiş hâli")
-  }, [])
+  const func = (num) => {
+    console.log('hesaplanıyor.... : ');
+    for (let i = 0; i < 10000; i++) {
+      console.log(i);
+      num++;
+    }
+    return num;
+  };
 
-  console.log('Ref örneğimiz: ', firstRef.current);
-  // Ref örneğimiz:  <input placeholder=​"useRef ile referans aldığımız element.. '.current' ile de ilk key'e ulaşıyoruz">​
-    return (
-      <>
-      <div>{status}</div>
-      <input ref={firstRef} placeholder="useRef ile referans aldığımız element.. '.current' ile de ilk key'e ulaşıyoruz"/>
-      </>
-    );
+  // useMemo syntax: useMemo(() => first, [second])
+  // burada aslında şunu demiş oluyoruz: sayfada hangi render işlemi yapılırsa yapılsın (bu örnekte setText değeri değiştikçe sayfa render oluyor) "count" değerinde bir değişiklik olmadığı sürece count'u render etme. Yani yukarıdaki for döngüsü her render işleminde çalışmış olmayacak - count ile ilgili render işlemleri hariç.
+  const memo = useMemo( () => func(count), [count]);
+
+  return (
+  <>
+  {memo}
+  <input value={text} onChange={e => setText(e.target.value)} placeholder='ara'/>
+  </>
+  )
 }
 
 export default App;
