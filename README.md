@@ -68,7 +68,7 @@ Ayrıca gelen props'u şöyle kullanıyoruz: props mantığı: ben bir propsum
 
 ***
 
-## *4)* `Map` kavramı hakkında: `Map` nedir? Ne iş yapar?
+## *4)* `Map` metodu hakkında: `Map` nedir? Ne iş yapar?
 
 `Map` fonksiyonuyla oluşturduğumuz diziler içerisindeki elemanları ekrana bastırabiliriz. Meselâ aşağıdaki gibi bir `App.js` kodumuz olsun:
 
