@@ -583,3 +583,31 @@ export default App;
 ```
 
 Buradaki ilk `useEffect` hook'u sayfa her render edildiğinde çalışır. İkinci `useEffect` hook'u ise yalnızca `count`'ın state'i değiştiğinde çalışır.
+
+Başka bir örneğe daha bakalım:
+
+```
+import { useState, useEffect } from 'react';
+
+function App() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    document.title = `Clicked ${count} times`;
+  }, [count]);
+
+  return (
+    <div>
+      <p>You clicked the button {count} times</p>
+      <button onClick={() => setCount(count + 1)}>
+        Click me
+      </button>
+    </div>
+  );
+}
+
+export default App;
+
+```
+
+Yukarıdaki örnekte de sayfanın başlığını/title'ını `count` değişkeninin state'i olarak belirliyoruz.
