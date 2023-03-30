@@ -1,13 +1,17 @@
 import { useState } from 'react';
+import ArrayExample from './components/Array.jsx';
+import CountExample from './components/Count.jsx';
 import Deneme from './components/Deneme.jsx';
 import Masum from './components/Masum.jsx';
+import ObjectExample from './components/Object.jsx';
+import StringExample from './components/Text.jsx';
 
 function App() {
 
   // "useState" hook'u bir başlangıç hâli (initial state) alıyor
   // bu şu anlama geliyor: ben bir "count" oluşturacağım ve başlangıç değeri olarak da "0" vereceğim. "setCount" ne peki? "setCount" ise kendisi aracılığıyla "count"un içerisini güncelleyeceğimiz fonksiyon.
-  const [count, setCount] = useState(0);
-  console.log('count: ', count); // 0
+  const [countt, setCountt] = useState(0);
+  console.log('count: ', countt); // 0
 
   // useState hook'u String de alabilir
   const [stringAlanHook, setStringAlanHook] = useState('Bu Hook string bir değer alıyor');
@@ -23,6 +27,17 @@ function App() {
 
   return (
     <div className='app'>
+      <div>String Hook'u:</div>
+      <StringExample/>
+      <hr></hr>
+      <div>Number Hook'u</div>
+      <CountExample/>
+      <hr></hr>
+      <div>Array Hook'u</div>
+      <ArrayExample/>
+      <hr></hr>
+      <div>Object Hook'u</div>
+      <ObjectExample/>
     </div>
   );
 }

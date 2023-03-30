@@ -164,4 +164,172 @@ Burada, arrow function, elemanı, elemanın `index` numarasını ve **dizinin ke
 
 ***
 
-## 5)
+## 5) `Hooks` kullanımları: `useState`
+
+`useState` hook'u React'ta `state yönetimi` için kullanılan bir fonksiyondur. `useState` hook'u bir fonksiyon çağrısıdır ve geriye bir `dizi` döndürür. Bu dizi iki eleman içerir: `mevcut state değeri (initial state)` ve `state değerini güncellemek için kullanılacak bir fonksiyon`. 
+
+Meselâ elimizde aşağıdaki gibi bir kod olsun:
+
+```
+import React, { useState } from 'react';
+
+function CountExample() {
+
+  const [count, setCount] = useState(0);
+  const clickFuncPlus = () => {
+    setCount(count+1);
+  }
+  const clickFuncMinor = () => {
+    setCount(count-1);
+  }
+  const clickFuncReset = () => {
+    setCount(0);
+  }
+
+  return (
+    <div>
+      <button onClick={clickFuncPlus}>artır beni</button>
+      <button onClick={clickFuncMinor}>azalt beni</button>
+      <button onClick={clickFuncReset}>sıfırla beni</button>
+      <p>count sayısı: {count}</p>
+    </div>
+  );
+}
+
+export default CountExample;
+
+```
+
+Burada ilk olarak `useState` hook'unda kullanmak üzere bir **dizi** oluşturuyoruz (`useState` hook'u **dizi** içerisinde değişken isimleri verilerek tanımlanır.)
+
+Bu kod, React Hooks'ın bir özelliği olan `useState` fonksiyonunu kullanarak bir değişken (count) oluşturur ve bu değişkenin başlangıç ​​değerini **0** olarak ayarlar.
+
+Sonra, `clickFuncPlus` adlı bir fonksiyon tanımlar. Bu fonksiyon, `count` değişkenine **1** eklemek için `setCount` fonksiyonunu kullanır. `setCount` fonksiyonu, React'ta state'in güncellenmesini tetikler ve React, bileşenin yeniden render edilmesi gerektiğini anlar.
+
+Yani, `clickFuncPlus` fonksiyonu çağrıldığında, `count` değişkeni **1** artar ve React, bu değişikliği fark ederek bileşeni yeniden render eder. Bu, ekranda görüntülenen sayının artmasıyla sonuçlanır.
+
+Bu kod örneği, bir sayaç bileşeni için basit bir örnek oluşturur. Kullanıcı sayaç üzerinde artı düğmesine tıkladıkça, sayı artar ve bu, kullanıcının uygulamanın geri kalanında ne olacağına bağlı olarak farklı işlevlerde kullanılabilir.
+
+Benzer mantığı string, array ve object için de kullanabiliriz.
+
+**1.** **String** örneği:
+
+```
+import React, { useState } from 'react';
+
+function StringExample() {
+  // inputText'in başlangıç değerini boş bir string olarak belirliyoruz
+  const [inputText, setInputText] = useState('');
+
+  // listedeki tüm metinleri depolamak için bir state kullanacağız
+  const [list, setList] = useState([]);
+
+  // her bir olay olduğunda olayın değerini setInputText olarak ayarla. Yani, girilen her değer setInputText olmuş olacak ve bu da inputText'i güncelleyecek
+  const handleChange = (event) => {
+    setInputText(event.target.value);
+    console.log('mevcut inputText', inputText);
+  };
+
+  const addString = () => {
+    // mevcut listedeki tüm metinleri kopyalayın
+    const newList = [...list];
+    console.log('newList şu şekilde: ', newList)
+
+    // inputText'i listeye ekleyin
+    newList.push(inputText);
+
+    // listeyi güncelle. Yani, setList fonksiyonu "newList" dizisini alıp "list" dizisine aktaracak. Yani, "list" dizisi güncellenmiş olacak
+    setList(newList);
+
+    // inputText'i boş bir dizeye ayarlayın, böylece sonraki metin girişi için hazır oluruz
+    setInputText('');
+  };
+
+  return (
+    <div>
+      <input type='text' value={inputText} onChange={handleChange} />
+      <p>You typed: {inputText}</p>
+      <button onClick={addString}>ekle beni</button>
+      <ul>
+        {list.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default StringExample;
+
+```
+
+**2**. **Array** örneği:
+
+```
+import React, { useState } from "react";
+
+function ArrayExample() {
+  const [inputValue, setInputValue] = useState("");
+  const [items, setItems] = useState([]);
+
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  };
+
+  const handleAddItem = () => {
+    setItems([...items, inputValue]);
+    setInputValue("");
+  };
+
+  return (
+    <div>
+      <input type="text" value={inputValue} onChange={handleInputChange} />
+      <button onClick={handleAddItem}>Add Item</button>
+      <ul>
+        {items.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default ArrayExample;
+
+```
+**3**. **Object** örneği:
+
+```
+import { useState } from "react";
+
+function ObjectExample() {
+  const [inputValue, setInputValue] = useState("");
+  const [items, setItems] = useState([]);
+
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  };
+
+  const addItem = () => {
+    setItems([...items, { text: inputValue, id: Date.now() }]);
+    setInputValue("");
+  };
+
+  return (
+    <div>
+      <input type="text" value={inputValue} onChange={handleInputChange} />
+      <button onClick={addItem}>Add Item</button>
+      <ul>
+        {items.map((item) => (
+          <li key={item.id}>{item.text}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default ObjectExample;
+
+```
+
+Bu örneklerin incelenmesi veya kopyalanıp denenmes, `useState`in kullanımını anlamaya yardımcı olacaktır.
