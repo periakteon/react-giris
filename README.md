@@ -332,4 +332,34 @@ export default ObjectExample;
 
 ```
 
+Ayrıca basit bir renk değiştirme uygulaması da yapabiliriz:
+
+```
+import { useState } from 'react';
+
+function App() {
+
+  const [renk, setRenk] = useState('');
+
+  const handleInputChange = (event) => {
+    setRenk(event.target.value);
+  };
+  
+
+  return (
+    <div className='app'>
+      <input type="text" value={renk} onChange={handleInputChange} />
+      <div style={{color: renk}} >
+        asd
+      </div>
+      
+    </div>
+  );
+}
+
+export default App;
+
+```
+Meselâ yukarıdaki örnekte ilk olarak `renk` değişkeninin `initial state`'ini boş olarak ayarlıyoruz. Daha sonra bir event listener ekliyoruz ve input alanına girilen değeri `setRenk` fonksiyonuyla `renk` değişkenine yeniden atıyoruz. Böylece ekranda görünen yazının rengi, kullanıcının yazdığı renkte olacaktır.
+
 Bu örneklerin incelenmesi veya kopyalanıp denenmes, `useState`in kullanımını anlamaya yardımcı olacaktır.
