@@ -13,7 +13,7 @@ Yani, birden çok küçük parçaların birleştirilmesi esastır. Mesela bir si
 
 React bileşenleri, markup döndüren JavaScript fonksiyonlarıdır:
 
-```
+```js
 function MyButton() {
   return (
     <button>I'm a button</button>
@@ -30,7 +30,7 @@ Yazılan `component`leri de uygulama içerisinde <ComponentName/> şeklinde impo
 
 Elimizde `MyButton,jsx` dosyasında tanımladığımız bir fonksiyon olsun. Biz bunu başka bir `component`in içerisine geçirebiliriz (*nest*).
 
-```
+```js
 export default function MyApp() {
   return (
     <div>
@@ -48,7 +48,7 @@ export default function MyApp() {
 
 Bir `props` esas itibariyle bir bileşende vb. tanımlayıp başka bileşenlerde erişebildiğimiz bir şeydir. Mesela elimizde aşağıdaki gibi bir `App.js` kodu olsun:
 
-```
+```js
 function App() {
   const propsDeneme = "props mantığı: ben bir propsum"
   return (
@@ -66,7 +66,7 @@ Yukarıdaki bu kodda `<Masum propsIcınBoyleYapiyoruz = {propsDeneme}/>` şeklin
 
 **2.** Verdiğimiz bu `props`u `Masum` adındaki `component`te nasıl kullanacağız peki? `Masum.jsx` dosyamız şu şekilde olsun:
 
-```
+```js
 import "../App.css"
 
 const Masum = ({propsIcınBoyleYapiyoruz}) => {
@@ -98,7 +98,7 @@ Ayrıca gelen props'u şöyle kullanıyoruz: props mantığı: ben bir propsum
 
 `Map` fonksiyonuyla oluşturduğumuz diziler içerisindeki elemanları ekrana bastırabiliriz. Meselâ aşağıdaki gibi bir `App.js` kodumuz olsun:
 
-```
+```js
 function App() {
 
   const arr = [
@@ -128,13 +128,13 @@ function App() {
 
 **4.** `key` özelliğiyle ilgili alternatif bir çözüm de aşağıdaki gibidir. Aşağıdaki çözümde `key` özelliğine eklemek üzere `map` fonksiyonuna `i`, yani bir *index* parametresi daha ekliyoruz ve bunu da `key` özelliğine **süslü parantez içerisinde** veriyoruz.
 
-```
+```js
 arr.map( (ar, i) => ( <div key={i}>{ar.name}</div>))
 ```
 
 **5.** Son olarak, `map` metodunun *syntax*i şu şekildedir:
 
-```
+```js
 // Arrow function
 map((element) => { /* … */ })
 map((element, index) => { /* … */ })
@@ -147,7 +147,7 @@ Yani, `arr.map()` fonksiyonu, bir dizi (array) üzerinde bir fonksiyonu her elem
 
 **1)** Sadece elemanları kullanarak bir dizi oluşturma:
 
-```
+```js
 const arr = [1, 2, 3];
 const newArr = arr.map((element) => {
   return element * 2;
@@ -161,7 +161,7 @@ Burada, arrow function sadece elemanı alıyor ve elemanın iki katını döndü
 
 **2)** Elemanın yanı sıra, elemanın index numarasını da kullanarak bir dizi oluşturma:
 
-```
+```js
 const arr = [1, 2, 3];
 const newArr = arr.map((element, index) => {
   return `Element ${index} is ${element}`;
@@ -174,7 +174,7 @@ Burada, arrow function, hem elemanı hem de elemanın `index` numarasını alıy
 
 **3)** Elemanın yanı sıra, elemanın index numarası ve dizinin kendisi de kullanılarak bir dizi oluşturma:
 
-```
+```js
 const arr = [1, 2, 3];
 const newArr = arr.map((element, index, array) => {
   const total = array.reduce((acc, val) => {
@@ -196,7 +196,7 @@ Burada, arrow function, elemanı, elemanın `index` numarasını ve **dizinin ke
 
 Meselâ elimizde aşağıdaki gibi bir kod olsun:
 
-```
+```js
 import React, { useState } from 'react';
 
 function CountExample() {
@@ -240,7 +240,7 @@ Benzer mantığı string, array ve object için de kullanabiliriz.
 
 **1.** **String** örneği:
 
-```
+```js
 import React, { useState } from 'react';
 
 function StringExample() {
@@ -291,7 +291,7 @@ export default StringExample;
 
 **2**. **Array** örneği:
 
-```
+```js
 import React, { useState } from "react";
 
 function ArrayExample() {
@@ -325,7 +325,7 @@ export default ArrayExample;
 ```
 **3**. **Object** örneği:
 
-```
+```js
 import { useState } from "react";
 
 function ObjectExample() {
@@ -360,7 +360,7 @@ export default ObjectExample;
 
 Ayrıca basit bir renk değiştirme uygulaması da yapabiliriz:
 
-```
+```js
 import { useState } from 'react';
 
 function App() {
@@ -390,7 +390,7 @@ Meselâ yukarıdaki örnekte ilk olarak `renk` değişkeninin `initial state`'in
 
 Ayrıca `boolean` değerler ile de benzer bir örneği yapabiliriz:
 
-```
+```js
 import { useState } from 'react';
 
 function App() {
@@ -419,7 +419,7 @@ export default App;
 
 Başka bir `boolean` örneğimiz ise `Accordion` örneği olsun:
 
-```
+```js
 import { useState } from 'react';
 
 function App() {
@@ -446,7 +446,7 @@ Bu da çok kullanışlı bir `boolean` örneğidir.
 
 **Modal pencere** örnekleri de `useState`in en çok kullanıldığı yerlerden birisidir:
 
-```
+```js
 import { useState } from 'react';
 
 function App() {
@@ -486,7 +486,7 @@ Bu örneklerin incelenmesi veya kopyalanıp denenmes, `useState`in kullanımın�
 
 `useEffect`'in syntax'ı şu şekildedir:
 
-```
+```js
 useEffect ( () => {
 
 }, [] );
@@ -498,7 +498,7 @@ Peki `useEffect` hook'u ne işe yarar? Sayfa yüklendiğinde çalışmasını is
 
 Meselâ elimizde aşağıdaki gibi bir kod olsun:
 
-```
+```js
 import { useEffect, useState } from 'react';
 
 function App() {
@@ -525,7 +525,7 @@ Burada uygulamaya en nihayetinde bir div döndürüyoruz ve bu div, `status` de�
 
 Başka bir örnek verelim:
 
-```
+```js
 import { useState, useEffect } from 'react';
 
 function App() {
@@ -554,7 +554,7 @@ export default App;
 
 Daha basit bir örnek verelim:
 
-```
+```js
 import { useState, useEffect } from 'react';
 
 function App() {
@@ -586,7 +586,7 @@ Buradaki ilk `useEffect` hook'u sayfa her render edildiğinde çalışır. İkin
 
 Başka bir örneğe daha bakalım:
 
-```
+```js
 import { useState, useEffect } from 'react';
 
 function App() {
@@ -618,19 +618,19 @@ Yukarıdaki örnekte de sayfanın başlığını/title'ını `count` değişkeni
 
 HTML kodu:
 
-```
+```html
 <input type="textbox" id="input" placeholder="search"> Ara... </input>
 ```
 
 JavaScript kodu:
 
-```
+```js
 const input = document.getElementById("input")
 ```
 
 İşte React'teki `useRef` hook'uyla DOM elemanları üzerinde işlem yapabiliyoruz. Meselâ elimizde aşağıdaki gibi bir kod olsun:
 
-```
+```js
 import { useEffect, useRef, useState } from 'react';
 
 function App() {
@@ -659,7 +659,7 @@ Burada `firstRef` değişkeni tanımlıyoruz ve buna `useRef` hook'unu atıyoruz
 
 Başka bir örnek:
 
-```
+```js
 import { useEffect, useRef, useState } from 'react';
 
 function App() {
@@ -686,7 +686,7 @@ export default App;
 
 Başka bir örnek daha:
 
-```
+```js
 import { useEffect, useRef, useState } from 'react';
 
 function App() {
@@ -723,7 +723,7 @@ export default App;
 
 Başka bir örnek daha:
 
-```
+```js
 import { useEffect, useRef, useState } from 'react';
 
 function App() {
@@ -750,7 +750,7 @@ export default App;
 
 Yapı olarak `useEffect`'e benzer. Sayfaya çekilen veriyi **bir kere** çeker ve onu hafızada tutar. Sayfayı komple render etmiş olsak bile biz bu hook aracılığıyla o veriyi çekip istediğimiz zaman kullanabiliriz. Meselâ elimizde aşağıdaki gibi bir kod olsun:
 
-```
+```js
 import { useEffect, useRef, useState } from 'react';
 
 function App() {
@@ -780,7 +780,7 @@ export default App;
 
 Bu kod aslında çok büyük bir sayıya kadar hep işlem yapıyor ve bu da uygulamanın donmasına, kasmasına sebep oluyor. İşte bu tür sorunlarla karşılaşmamak için `useMemo` hook'u kullanılmaktadır. Meselâ elimizde aşağıdaki gibi bir kod olsun:
 
-```
+```js
 import { useMemo, useState } from 'react';
 
 function App() {
@@ -816,7 +816,7 @@ Bu örnekte aslında şunu yapmış oluyoruz: sayfada hangi render işlemi yapı
 
 Eğer biz,
 
-```
+```js
 const memo = func(count);
 ```
 
@@ -824,7 +824,7 @@ kodu bu şekilde yazmış olsaydık, `input`'a girilen her değerde `count` yeni
 
 Eğer biz kodu yukarıdaki gibi değil de aşağıdaki gibi yapsaydık:
 
-```
+```js
 const memo = useMemo( () => func(count), [text]);
 ```
 
