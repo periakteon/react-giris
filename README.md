@@ -906,4 +906,124 @@ export const Detail = () => {
 export default Detail
 ```
 
-Bundan böyle `/` adresine gittiğimizde `Home.jsx` sayfasını, `/details` adresine gittiğimizde ise `Detail.jsx` sayfasını göreceğiz. Özetlemek gerekirse: Routing işlemleri yapabilmek için `Routes` içerisinde `Route`'ları tanımlıyoruz. `Route`'ların içerisinde `path` ve `element` adında iki prop var. `path` prop'u ile hangi adreslere gittiğimizde hangi sayfayı göreceğimizi belirliyoruz. `element` prop'u ile de hangi sayfayı göstereceğimizi belirtiyoruz. 
+Bundan böyle `/` adresine gittiğimizde `Home.jsx` sayfasını, `/details` adresine gittiğimizde ise `Detail.jsx` sayfasını göreceğiz. Özetlemek gerekirse: Routing işlemleri yapabilmek için `Routes` içerisinde `Route`'ları tanımlıyoruz. `Route`'ların içerisinde `path` ve `element` adında iki prop var. `path` prop'u ile hangi adreslere gittiğimizde hangi sayfayı göreceğimizi belirliyoruz. `element` prop'u ile de hangi sayfayı göstereceğimizi belirtiyoruz.
+
+#### Peki routing işlemlerini belirli `id`lere göre nasıl yapabiliriz?
+
+Bir mağaza uygulaması olduğunu düşünelim ve bu mağazadaki her bir ürünün bir `id`ye sahip olduğunu düşünelim. Bu `id`'ler sayesinde ürünlerimizi detaylı bir şekilde gösterebileceğiz. Örneğin `http://localhost:3000/products/1` adresine gittiğimizde `id`'si 1 olan ürünün detaylarını gösterecek, `http://localhost:3000/products/2` adresine gittiğimizde ise `id`'si 2 olan ürünün detaylarını gösterecek.
+
+Diyelim ki tüm ürün verilerini içerisinde tuttuğumuz bir dosyamız var. Adı `data.js` olsun. Bu dosyamızın içerisinde şöyle bir şeyler olsun:
+
+```js
+const arr = [
+  {name: 'iphone', id: 0},
+  {name: 'samsung', id: 1},
+  {name: 'huawei', id: 2},
+  {name: 'nokia', id: 3},
+]
+
+export default arr;
+```
+
+Bu `arr` adındaki array'in içerisindeki ürünleri `Home` route'unda görüntülemek istiyoruz. Ne yapmamız gerek? Öncelikle `Home` route'unda `data.js` dosyasını import ediyoruz:
+
+```js
+import data from '../data'
+```
+
+Daha sonra `Home` route'unda `data`'yı map ediyoruz. Yani, elimizde şöyle bir kod olmuş oluyor:
+
+```js
+import React from 'react';
+import arr from '../data';
+
+export const Home = () => {
+
+  const redirectFunc = () => {
+    window.location.href = '/detail';
+  };
+
+  return (
+    <div>
+      {
+        arr.map((ar) => {
+          return (
+            <div key={ar.id} style={{ margin: "10px", coursor: "pointer", border: "2px solid black", padding: "5px"}}>
+              Ürün ismi:
+              {ar.name}
+            </div>
+          )
+        }
+        )
+      }
+    </div>
+  );
+};
+
+export default Home;
+```
+
+Yaptığımız bu `map` işlemiyle `data.js` dosyasındaki `arr` array'inin içerisindeki her bir elemanı tek tek dolaşıyoruz ve bir `div` içerisinde gösteriyoruz. 
+
+Peki routing işlemini `id`'ye göre yapmak için ne yapmamız gerkeiyor? `App.js` kodumuzu şu şekilde güncelleyelim:
+
+```js
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import Home from './pages/Home';
+import Detail from './pages/Detail';
+
+function App() {
+  return (
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/detail/:id' element={<Detail />} />
+        </Routes>
+      </BrowserRouter>
+    </>
+  );
+}
+
+export default App;
+```
+
+Burada ne yapmış olduk? `<Route path='/detail/:id' element={<Detail />} />` kodunu ekledik ve bundan böyle `site.com/detail/id` adresine gelen istekleri `Detail` sayfasına yönlendireceğiz. `:id` kısmı ise `id`'yi dinamik olarak alacağımızı belirtiyor.
+
+Şimdi, `map` fonksiyonuyla döndürdüğümüz `div` içerisindeki her elemana bir yönlendirme ekleyelim:
+
+```js
+import React from 'react';
+import arr from '../data';
+
+export const Home = () => {
+  const redirectFunc = (id) => {
+    window.location.href = `/detail/${id}`;
+  };
+
+  return (
+    <div>
+      {arr.map((ar) => {
+        return (
+          <div
+            key={ar.id}
+            style={{
+              margin: '10px',
+              border: '2px solid black',
+              padding: '5px',
+            }}
+          >
+            Ürün ismi:
+            <br></br>
+            <button style={{ cursor: 'pointer' }} onClick={() => redirectFunc(ar.id)}>{ar.name}</button>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+export default Home;
+```
+
+Burada `redirectFunc` adındaki yönlendirme fonksiyonumuza parametre olarak `id` verdik ve `window.location.href` ile `id`'yi `detail` route'una ekleyerek yönlendirdik. Eklediğimiz butona `data.js` içerisindeki, yani her bir ürünümüzün tutulduğu dosyadaki ürünlerin `id`'lerini gönderdik. Bundan böyle ürünlere tıkladığımızda ürünlerin sahip oldukları `id`'ye göre yönlendirme işlemi gerçekleşmiş olacak. Meselâ `iphone` butonuna tıkladığımızda `http://localhost:3000/detail/0` adresine yönlendirileceğiz.
