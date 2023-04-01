@@ -1273,3 +1273,43 @@ export default App;
 
 ## 11) Fetch Data Uygulaması
 
+Ücretsiz bir API kullanarak ülkeleri bayraklarıyla birlikte listelemek için aşağıdaki kodu kullanabilirsiniz:
+
+```js
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+
+function App() {
+  const [country, setCountry] = useState([]);
+
+  useEffect(() => {
+    const fetchCountry = async () => {
+      const data = await axios.get('https://restcountries.com/v3.1/all');
+      console.log('Data:', data);
+      setCountry(data);
+    };
+    fetchCountry();
+  }, [])
+
+  return (
+    <>
+     {
+      country?.data?.map((country, index) => (
+        <div key={index}>
+          <h1>{country.name.common}</h1>
+          <img src={country.flags.png} alt={country.name.official} />
+        </div>
+      ))
+     }
+    </>
+  );
+}
+
+export default App;
+```
+
+**NOT:** Bunu kullanabilmek için `axios` paketi kurulmalıdır. `npm install axios` komutu ile kurulabilir.
+
+***
+
+## 12) `Redux` Nedir?
