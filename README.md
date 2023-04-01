@@ -1027,3 +1027,30 @@ export default Home;
 ```
 
 Burada `redirectFunc` adındaki yönlendirme fonksiyonumuza parametre olarak `id` verdik ve `window.location.href` ile `id`'yi `detail` route'una ekleyerek yönlendirdik. Eklediğimiz butona `data.js` içerisindeki, yani her bir ürünümüzün tutulduğu dosyadaki ürünlerin `id`'lerini gönderdik. Bundan böyle ürünlere tıkladığımızda ürünlerin sahip oldukları `id`'ye göre yönlendirme işlemi gerçekleşmiş olacak. Meselâ `iphone` butonuna tıkladığımızda `http://localhost:3000/detail/0` adresine yönlendirileceğiz.
+
+Açılan `detail` sayfasında ürünün ID'sini görmek istiyorsak ne yapmamız gerekiyor? Bunun için bir hook'umuz var: `useParams()`. Bu hook'u kullanarak `id`'yi alıp ekranda gösterebiliriz. `Detail` sayfasının kodunu şu şekilde güncelleyelim:
+
+```js
+import React from 'react';
+import { useParams } from 'react-router-dom';
+
+export const Detail = () => {
+
+  const { id } = useParams();
+
+  const redirectFunc = () => {
+    window.location.href = '/';
+  };
+
+  return (
+    <div>
+      <h1>Ürün ID'si: {id} </h1>
+      <button onClick={redirectFunc}>anasayfaya yönlendir</button>
+    </div>
+  );
+};
+
+export default Detail;
+```
+
+`useParams()` hook'u ile `id`'yi alıp ekranda gösterdik. `useParams()` hook'unu çağırırken süslü parantez kullanmamızın sebebi, `useParams()` hook'u bir obje döndürüyor. Bu objenin içerisinde `id`'yi almak için `id`'yi süslü parantez içerisinde tanımladık. Buradaki `id` ise `App.js` içerisindeki `<Route path='/detail/:id' element={<Detail />} />` bu routing kodunda yer alan `:id` kısmıdır.
