@@ -1,11 +1,16 @@
-import {AiFillAndroid} from 'react-icons/ai';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import Home from './pages/Home';
+import Detail from './pages/Detail';
 
 function App() {
-
   return (
     <>
-    React-icons ile hazır icon kütüphanesi. Mesela bu ikonu kullanmak için:
-    <AiFillAndroid />
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/detail' element={<Detail />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }

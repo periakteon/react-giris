@@ -829,3 +829,81 @@ const memo = useMemo( () => func(count), [text]);
 ```
 
 Bu durumda `input`'a girilen her `text` değiştiğinde bu fonksiyon yeniden çalışırdı. Yani `array` içerisinde belirttiğimiz değer/eleman, `useMemo` hook'unun ne zaman devreye gireceğini belirtir.
+
+## 8) `React Router Dom` nedir? Ne işe yarar?
+
+Öncelikle terminale `npm i react-router-dom` yazarak paketimizi kuruyoruz.
+
+Devam etmeden önce ufak bir trick göstermek istiyorum.
+
+#### **TRICK:** Yeni açtığımız bir `.jsx` dosyasına `rafce` yazıp tab'a/enter'a bastığımızda bizim için otomatik olarak şöyle bir şablon oluşturur:
+
+```js
+import React from 'react'
+
+const DOSYAISMI = () => {
+  return (
+    <div>Home</div>
+  )
+}
+
+export default Home
+```
+
+Routing işlemlerini yapabilmek için öncelikle `App.js`imizin içerisine import işlemi yapıyoruz:
+
+```js
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+```
+
+Routing işlemleri genelde şöyle bir template üzerinden işlemektedir:
+
+```js
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+
+function App() {
+
+  return (
+    <>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="details" element={<Details />} />
+      </Routes>
+    </BrowserRouter>
+    </>
+  );
+}
+
+export default App;
+```
+
+Routing işlemleri için `src` klasörünün içerisine `pages` adında bir klasör oluşturuyoruz. Bu klasör içerisine de sayfalarımızı oluşturabiliriz. Meselâ `Home.jsx` adında bir dosya oluşturduk:
+
+```js
+import React from 'react'
+
+export const Home = () => {
+  return (
+    <div>Home</div>
+  )
+}
+
+export default Home
+```
+
+Aynı şekilde `Detail.jsx` adında bir dosya daha oluşturalım:
+
+```js
+import React from 'react'
+
+export const Detail = () => {
+  return (
+    <div>Detail</div>
+  )
+}
+
+export default Detail
+```
+
+Bundan böyle `/` adresine gittiğimizde `Home.jsx` sayfasını, `/details` adresine gittiğimizde ise `Detail.jsx` sayfasını göreceğiz. Özetlemek gerekirse: Routing işlemleri yapabilmek için `Routes` içerisinde `Route`'ları tanımlıyoruz. `Route`'ların içerisinde `path` ve `element` adında iki prop var. `path` prop'u ile hangi adreslere gittiğimizde hangi sayfayı göreceğimizi belirliyoruz. `element` prop'u ile de hangi sayfayı göstereceğimizi belirtiyoruz. 
