@@ -1313,3 +1313,172 @@ export default App;
 ***
 
 ## 12) `Redux` Nedir?
+
+Öncelikle terminalden paketlerin kurulumunu yapalım: `npm i redux react-redux redux-thunk redux-devtools-extension`
+
+Diyelim ki elimizde iki tane component var: `Header,jsx` ve `Body,jsx`. Bu componentler aslında birbirlerinden ayrılar. Bu componentlerin içerisinde de `state`lerin olduğunu düşünelim. Biz bu farklı sayfalarda yer alan `state`lere nasıl erişebiliriz? Bunun için `Redux` kullanırız. 
+
+Şöyle bir sayfa yapımız olsun:
+
+```bash
+redux
+  ├── actions
+  │   ├── ...
+  │   └── ...
+  ├── reducers
+  │   ├── ...
+  │   └── ...
+  └── store.js
+```
+
+#### `store.js` ayarları:
+
+`store.js` içerisinde yaptığımız şeyler bizim için sabit şeylerdir. Yani, her uygulamada bunları kullanırız. `store.js` dosyasına aşağıdaki kodları yazalım:
+
+```js
+import { combineReducers, applyMiddleware, createStore } from "redux"
+import { composeWithDevTools } from "redux-devtools-extension"
+import thunk from "redux-thunk"
+
+const initialState = {
+
+}
+
+const reducers = combineReducers({
+  // reducers'larınızı burada tanımlayın
+})
+
+const store = createStore(reducers, initialState, composeWithDevTools(applyMiddleware(thunk)));
+
+export default store;
+```
+
+Bu kod, bazı başlangıç yapılandırmalarıyla birlikte bir `Redux store`'u kurar.
+
+İlk olarak, `Redux` ve `Redux DevTools Extension` kütüphanelerinden gerekli fonksiyonları içe aktarır: `createStore`, `combineReducers`, `applyMiddleware` ve `composeWithDevTools`. Ayrıca Redux'ta asenkron eylemlere olanak tanıyan `thunk` middleware'ini de içe aktarır.
+
+Ardından, bir `initial state` nesnesi ayarlar. Yukarıdaki örnekte, `initial state` boş bir nesnedir.
+
+Daha sonra, `createStore` fonksiyonunu kullanarak bir `Redux store`'u oluşturur. `createStore` fonksiyonu üç argüman alır:
+
+**1. `reducers`:** Farklı eylemlere yanıt olarak `state`'in nasıl değişmesi gerektiğini açıklayan bir dizi `reducer` fonksiyonu. Bu kodda `reducers` tanımlanmamıştır, bu nedenle hata verecektir. Genel olarak, `combineReducers` fonksiyonunu kullanarak `reducers`'larınızı tanımlar ve bunları `createStore` fonksiyonuna ilk argüman olarak geçiririz.
+
+**2.`initialState`:** Uygulamanın `initial state`'i (başlangıçtaki hâli). Bu örnekte, boş bir nesnedir.
+
+**3.`composeWithDevTools(applyMiddleware(thunk))`:** Bu, `Redux DevTools Extension`'ı `store` ile çalışacak şekilde ayarlar ve ayrıca `thunk` middleware'ini `store`'a uygular. `Thunk` middleware'i, yalnızca eylemler yerine fonksiyonlar göndermenize olanak tanır; bu da API çağrıları gibi asenkron işlemleri ele almak (*handle*) için kullanışlıdır.
+
+Son olarak kod, uygulamanın diğer bölümlerinde kullanılabilmesi için `store` nesnesini `default` olarak dışa aktarır.
+
+#### `index.js` ayarları:
+
+`React Redux`, Redux `store`'u uygulamanızın geri kalanı için kullanılabilir kılan bir `<Provider />` component'i içerir. Bizim bu component'i kullanmamız için React'ın root render işlemini `<React.StrictMode>`'dan çıkarmamız gerekiyor. Dolayısıyla, `index.js` dosyasını aşağıdaki gibi düzenleyelim:
+
+```js
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+
+import { Provider } from 'react-redux'
+import store from './store'
+
+import App from './App'
+
+const root = ReactDOM.createRoot(document.getElementById('root'))
+root.render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+)
+```
+Bu sayede `props` geçtiğimiz `store`ları her sayfada kullanabilir hâle geliyoruz.
+
+Ardından bir `reducer` oluşturalım. `reducers` dizininde `changeReducer.js` adında bir dosya oluşturalım ve içerisine aşağıdaki kodları yazalım:
+
+```js
+const changeReducer = (state = {init: "başlangıç değeri"}, action) => {
+  switch (action.type) {
+    case 'CHANGE':
+      return {
+        init: action.payload
+      };
+    default:
+      return state;
+  }
+};
+
+export default changeReducer;
+```
+Oluşturmuş olduğumuz `changeReducer` fonksiyonu üç parametre alır: `state`, `action` ve `initialState`. `state` parametresi, `initialState`'in varsayılan değeridir. `action` parametresi ise `dispatch` fonksiyonu ile gönderilen `action`'dır. `action` parametresi içerisinde `type` ve `payload` adında iki parametre bulunur. `type` parametresi, `action`'un ne yapacağını belirtir. `payload` ise `action`'un ne yapacağını belirtirken kullanacağı verilerdir.
+
+Yani diyelim ki bizim `type` türümüz `CHANGE`. Başlangıç değeri olarak da `init`e "başlangıç değeri"ni verelim. `return` ettiğimizde aslında şunu yapmış oluyoruz: `init` değerini `action`'un `payload`'indeki değer ile değiştiriyoruz. Bunu da daha sonra `export` ederek dışarıda kullanalım.
+
+**NOT**: Bu `reducer`'ı sayfanın her yerinde kullanabilmek için `store.js`e girip `combineReducers`'ın içerisine eklememiz gerekiyor. İlk başta vermiş olduğumuz `store.js`'in içerisindeki `reducers` değişkeni aslında boştu. Şimdi ise oluşturmuş olduğumuz `reducer`ı `store.js` içerisindeki `combineReducers`'ın içerisine ekleyelim:
+
+```js
+const reducers = combineReducers({
+  change: changeReducer,
+})
+```
+
+Ardından `App.js` dosyasına gidip `useSelector` ve `useDispatch` hook'larını kullanarak `state`'i ve `dispatch` fonksiyonunu çağırıp kullanalım:
+
+```js
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+function App() {
+
+  const dispatch = useDispatch();
+
+  // aşağıdaki kod ile store'daki state değerlerini alabiliriz.
+  // baktığımızda state'in içerisinde change key'ini ve bunun da içerisinde "init"i görüyoruz
+  // o zaman bunu yorum satırına alıp aşağıda "init"i alalım
+  // console.log("object:", useSelector(state => state));
+
+  const {init} = useSelector(state => state.change);
+  console.log("init değeri:", init); // Output: "başlangıç değeri"
+
+  const getData = () => {
+    dispatch({ type: 'CHANGE', payload: 'değişti' });
+  }
+  return (
+    <>
+     <button onClick={getData}>verileri al (butona tıklandığında payload aktif olur ve 'init' değeri 'değişti' olarak güncellenir</button>
+     <br></br>
+     {init}
+    </>
+  );
+}
+
+export default App;
+```
+
+Açmak gerekirse, öncelikle bir `initial` değer oluşturduk ve buna `init` dedik (`changeReducer.js` içerisinde). Daha sonra onu alıp `{init}` şeklinde ekrana yazdırdık. Bu değeri biz `changeReducer.js`'te `başlangıç değeri` olarak tanımlamıştık. Yani, `init` adında bir key oluşturup bu key'in değerini `başlangıç değeri` yaptık. Bizim bunu değiştirmemiz için `dispatch` ile değer göndermemiz gerekiyor. Yukarıdaki örnekte `type` olarak `CHANGE` gönderdik ve `payload` olarak da `değişti` gönderdik. Bu sayede `changeReducer.js` içerisinde yer alan `init` değerini `değişti` olarak güncelledik. Hatırlayacak olursak, `changeReducer.js` dosyamızda şöyle bir switch-case vardı:
+
+```js
+switch (action.type) {
+  case 'CHANGE':
+    return {
+      init: action.payload
+    };
+  default:
+    return state;
+}
+```
+
+`App.js` içerisindeki `dispatch` fonksiyonumuzu da alalım:
+
+```js
+  const getData = () => {
+    dispatch({ type: 'CHANGE', payload: 'değişti' });
+  }
+```
+
+Buradaki `getData` fonksiyonunu da oluşturduğumuz butona `onClick` ile vermiştik. Bundan böyle butona tıklandığında `dispatch`, yani sevk etme işlemi gerçekleşmiş olacak ve bu da `type` olarak `CHANGE` değeri alacak. `payload` olarak da `'değişti'` değerini alacak. Yukarıdaki switch-case yapısındaki kodumuza baktığımızda `'CHANGE'` durumunda (*case*), yani `case 'CHANGE':` olduğunda şunu yapıyor:
+
+```js
+    return {
+      init: action.payload
+    };
+```
+
+Yani, `init`'i `payload` ile değiştiriyor. Bu da bizim `init` değerimizi `değişti` olarak güncellemiş oluyor. Bu sayede `init` değerimiz `değişti` olarak güncellenmiş oluyor. Tabii bunu yaparken `return` üzerinden dönen bu değeri `useSelector` ile, yani `App.js` dosyasında yer alan `const {init} = useSelector(state => state.change);` kod ile yakalıyoruz ve ekrana yazdırıyoruz. Redux mantığı bu şekilde çalışmaktadır.

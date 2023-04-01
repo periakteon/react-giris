@@ -1,28 +1,26 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 
 function App() {
-  const [country, setCountry] = useState([]);
 
-  useEffect(() => {
-    const fetchCountry = async () => {
-      const data = await axios.get('https://restcountries.com/v3.1/all');
-      console.log('Data:', data);
-      setCountry(data);
-    };
-    fetchCountry();
-  }, [])
+  const dispatch = useDispatch();
 
+  // aşağıdaki kod ile store'daki state değerlerini alabiliriz.
+  // baktığımızda state'in içerisinde change key'ini ve bunun da içerisinde "init"i görüyoruz
+  // o zaman bunu yorum satırına alıp aşağıda "init"i alalım
+  // console.log("object:", useSelector(state => state));
+
+  const {init} = useSelector(state => state.change);
+  console.log("init değeri:", init); // Output: "başlangıç değeri"
+
+  const getData = () => {
+    dispatch({ type: 'CHANGE', payload: 'değişti' });
+  }
   return (
     <>
-     {
-      country?.data?.map((country, index) => (
-        <div key={index}>
-          <h1>{country.name.common}</h1>
-          <img src={country.flags.png} alt={country.name.official} />
-        </div>
-      ))
-     }
+     <button onClick={getData}>verileri al (butona tıklandığında payload aktif olur ve 'init' değeri 'değişti' olarak güncellenir</button>
+     <br></br>
+     {init}
     </>
   );
 }

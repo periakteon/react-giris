@@ -1,13 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React from 'react'
+import ReactDOM from 'react-dom/client'
 
-// oluşturulan App.js'in import edildiği kısım
-import App from './App';
+import { Provider } from 'react-redux'
+import store from './redux/store'
 
-// App.js'in, indirilmiş olan React ve ReactDOM üzerinden render edildiğini belirten kısım. Aşağıda görüldüğü üzere yalnızca "App" render ediliyor
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import App from './App'
+
+const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>
-);
+  </Provider>
+)
