@@ -1054,3 +1054,93 @@ export default Detail;
 ```
 
 `useParams()` hook'u ile `id`'yi alıp ekranda gösterdik. `useParams()` hook'unu çağırırken süslü parantez kullanmamızın sebebi, `useParams()` hook'u bir obje döndürüyor. Bu objenin içerisinde `id`'yi almak için `id`'yi süslü parantez içerisinde tanımladık. Buradaki `id` ise `App.js` içerisindeki `<Route path='/detail/:id' element={<Detail />} />` bu routing kodunda yer alan `:id` kısmıdır.
+
+Bu işlemi daha iyi bir şekilde de yapabiliriz. Yani, gelen `id` değerine göre `data.js` dosyasındaki `arr` array'inin içerisindeki elemanları dolaşarak, `id`'ye eşit olan elemanı bulup ekranda gösterebiliriz. Bunun için `Detail.jsx` dosyasını şu şekilde güncelleyelim:
+
+```js
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import arr from '../data';
+
+export const Detail = () => {
+  const { id } = useParams();
+  const [data, setData] = useState([]);
+
+  // sayfa yüklendiğinde
+  useEffect(() => {
+    setData(arr);
+  }, [id]);
+
+  console.log("data array'i: ", data);
+
+  const redirectFunc = () => {
+    window.location.href = '/';
+  };
+
+  return (
+    <div>
+      <button onClick={redirectFunc}>anasayfaya yönlendir</button>
+      {
+        data.filter(dt => dt.id === parseInt(id)).map((dat) => (
+          <div key={dat.id}>
+            <h1>Ürün ismi: {dat.name}</h1>
+            <br></br>
+            <h2>Ürün ID'si: {dat.id}</h2>
+          </div>
+        ))
+      }
+    </div>
+  );
+};
+
+export default Detail;
+```
+
+Şimdi bu kodda ne yaptığımızı satır satır açıklayalım:
+
+```js
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import arr from '../data';
+
+export const Detail = () => {
+```
+Bu kod, `react` ve `react-router-dom` kütüphanelerinden `React`, `useEffect`, `useState` ve `useParams` hook'larını içe aktararak başlıyor. Ayrıca, `arr` adlı veriyi yerel bir dosyadan (az önce oluşturduğumuz `arr.js` dosyasından) içe aktarıyor. Ardından, `Detail` adında yeni bir `functional component` tanımlanıyor ve bu fonksiyon `export` anahtar kelimesi ile (`App.js`te kullanılmak üzere) dışa aktarılıyor.
+
+
+```js
+  const { id } = useParams();
+  const [data, setData] = useState([]);
+```
+Bu kod, `useParams` ve `useState` hook'larını kullanarak iki yeni değişken tanımlıyor. `useParams` hook'u, mevcut sayfanın URL'sinden `id` parametresini kendisine esas alır. `useState` hook'u, `data` değişkeninin initial state'ini, yani başlangıç hâlini/state'ini boş bir array olarak tanımlar ve `setData` ise, `data` değişkeninin state'ini güncelleme işlevi görür.
+
+```js
+  // sayfa yüklendiğinde
+  useEffect(() => {
+    setData(arr);
+  }, [id]);
+```
+
+Bu kod, `useEffect` hook'unu kullanarak `id` parametresi değiştiğinde `data` state değişkenini güncelleyerek çalışır. `useEffect` hook'ının içindeki fonksiyon, `data` değişkenini içe aktarılan `arr` verisine göre ayarlar/günceller.
+
+```js
+  return (
+    <div>
+      <button onClick={redirectFunc}>anasayfaya yönlendir</button>
+      {
+        data.filter(dt => dt.id === parseInt(id)).map((dat) => (
+          <div key={dat.id}>
+            <h1>Ürün ismi: {dat.name}</h1>
+            <br></br>
+            <h2>Ürün ID'si: {dat.id}</h2>
+          </div>
+        ))
+      }
+    </div>
+  );
+};
+```
+
+Süslü parantezlerin içindeki kod bloğu, `filter()` metodunu kullanarak `data` array'ini filtreleyerek, yalnızca URL'deki ayrıştırılmış id parametresine eşit olan id özelliklerine sahip nesneleri içeren bir array oluşturur. Ardından, `map()` yöntemini kullanarak filtrelenmiş her eleman için yeni bir <div> öğesi oluşturur.
+
+Her `<div>` öğesi içinde, mevcut nesnenin `name` özelliğini gösteren bir `<h1>` öğesi ve `id` özelliğini gösteren bir `<h2>` öğesi yer alır. `key` özelliği, her öğenin benzersiz olmasını sağlamak için kullanılır.
