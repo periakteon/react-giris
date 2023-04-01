@@ -1,8 +1,11 @@
+import {AiFillAndroid} from 'react-icons/ai';
+
 function App() {
 
   return (
     <>
-    react-slick ile slider oluşturabiliriz. Hazır slider kütüphanesi.
+    React-icons ile hazır icon kütüphanesi. Mesela bu ikonu kullanmak için:
+    <AiFillAndroid />
     </>
   );
 }
