@@ -1,16 +1,15 @@
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import Home from './pages/Home';
-import Detail from './pages/Detail';
+import { useState } from 'react';
 
 function App() {
+  // text'i tutmak için state oluşturduk
+  const [text, setText] = useState('');
+  const onChangeFunc = (e) => {
+    setText(e.target.value);
+  }
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/detail/:id' element={<Detail />} />
-        </Routes>
-      </BrowserRouter>
+      <input value={text} onChange={onChangeFunc} type='text' placeholder='Ekle' />
+      <button>Ekle</button>
     </>
   );
 }
