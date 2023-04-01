@@ -1144,3 +1144,63 @@ Bu kod, `useEffect` hook'unu kullanarak `id` parametresi değiştiğinde `data` 
 Süslü parantezlerin içindeki kod bloğu, `filter()` metodunu kullanarak `data` array'ini filtreleyerek, yalnızca URL'deki ayrıştırılmış id parametresine eşit olan id özelliklerine sahip nesneleri içeren bir array oluşturur. Ardından, `map()` yöntemini kullanarak filtrelenmiş her eleman için yeni bir <div> öğesi oluşturur.
 
 Her `<div>` öğesi içinde, mevcut nesnenin `name` özelliğini gösteren bir `<h1>` öğesi ve `id` özelliğini gösteren bir `<h2>` öğesi yer alır. `key` özelliği, her öğenin benzersiz olmasını sağlamak için kullanılır.
+
+
+## 9) Klasör yapıları nasıl olmalıdır?
+
+React uygulamaları için klasör yapısı kabaca şu şekilde olabilir:
+
+```bash
+my-app
+├── README.md
+├── node_modules
+├── package.json
+├── .gitignore
+├── public
+│   ├── favicon.ico
+│   ├── index.html
+│   └── manifest.json
+└── src
+    ├── App.css
+    ├── App.js
+    ├── index.css
+    ├── index.js
+    ├── logo.svg
+    ├── components
+    │   ├── Header.jsx
+    │   ├── Footer.jsx
+    │   └── Main.jsx
+    ├── pages
+    │   ├── Home.jsx
+    │   ├── About.jsx
+    │   └── Contact.jsx
+    ├── data
+    │   └── arr.js
+    ├── assets
+    │   ├── images
+    │   │   ├── img1.jpg
+    │   │   ├── img2.jpg
+    │   │   └── img3.jpg
+    │   └── styles
+    │       ├── style1.css
+    │       ├── style2.css
+    │       └── style3.css
+    ├── routes
+    │   ├── index.js
+    │   └── routes.js
+    ├── redux
+    │   ├── actions
+    │   │   ├── index.js
+    │   │   └── types.js
+    │   ├── reducers
+    │   │   ├── index.js
+    │   │   └── userReducer.js
+    │   └── store.js
+    │── services
+    │   ├── api.js
+    │   └── auth.js
+    └── utils
+        ├── helpers.js
+        └── validators.js
+```
+
